@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        new Program();
     }
 }
 
@@ -12,23 +12,19 @@ abstract PublicEntity
     +getName(): String
     +getURL(): String
 
-abstract Artist extends PublicEntity
+Artist extends PublicEntity
     #songs: ArrayList<Song>
     #releases: ArrayList<Release>
 
     +getSongs(): ArrayList<Song>
     +getReleases(): ArrayList<Release>
 
-
-SoloArtist extends Artist
-
-
 GroupArtist extends Artist
-    -members: ArrayList<SoloArtist>
+    -members: ArrayList<Artist>
 
-    +getMembers: ArrayList<SoloArtist>
-    -addMember(SoloArtist): void
-    -removeMember(SoloArtist): void
+    +getMembers: ArrayList<Artist>
+    -addMember(Artist): void
+    -removeMember(Artist): void
 
 
 Song extends PublicEntity
@@ -49,18 +45,25 @@ Release extends PublicEntity
     +getSongs(): Song[]
 
 
-Playlist extends PublicEntity
-    -user: User
-    -isPublic: Boolean
-    -songs: ArrayList<Song>
-
-    +getUser(): User
-    -setPublic(boolean): void
-    +getSongs(): ArrayList<Song> //Only if (current user == this.user || public)
-
-
 User extends PublicEntity
+    -password: String
     -playlists: ArrayList<Playlist>
 
+    +login(password: String): Boolean
+    -setPassword(password: String): Boolean
     +getPlaylists(): Playlist[] //Only return public Playlist
+
+
+Playlist extends PublicEntity
+    -isPublic: Boolean
+    -owner: User
+    -songs: ArrayList<Song>
+
+    +isPublic(): Boolean
+    -setPublic(boolean): void
+    +getOwner(): User
+    +getSongs(): ArrayList<Song> //Only if (current user == this.user || public)
+    -addSong(song: Song): void
+    -removeSong(song: Song): void
+
 */
