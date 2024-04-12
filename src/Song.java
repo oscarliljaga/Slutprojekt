@@ -1,12 +1,15 @@
 public class Song extends PublicEntity {
-private Artist[] artists;
+    //Attributes
+    private final Artist[] ARTISTS;
 
-    public Song(String name, String URL, Artist[] artists) {
+    //Constructor
+    public Song(String name, String URL, Artist[] ARTISTS) {
         super(name, URL);
-        this.artists = artists;
+        this.ARTISTS = ARTISTS;
     }
 
-    public Artist[] getArtists() {
-        return artists;
+    //Methods
+    public Artist[] getARTISTS() {
+        return ARTISTS;
     }
 }

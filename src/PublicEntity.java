@@ -1,14 +1,17 @@
 public abstract class PublicEntity {
-    protected String name;
-    protected String URL;
+    //Attributes
+    protected final String NAME;
+    protected final String URL;
 
-    public PublicEntity (String name, String URL) {
-        this.name = name;
+    //Constructor
+    public PublicEntity(String NAME, String URL) {
+        this.NAME = NAME;
         this.URL = URL;
     }
 
-    public String getName() {
-        return name;
+    //Methods
+    public String getNAME() {
+        return NAME;
     }
 
     public String getURL() {

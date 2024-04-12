@@ -1,12 +1,15 @@
 import java.util.ArrayList;
 
-public class Artist extends PublicEntity{
+abstract public class Artist extends PublicEntity {
+    //Attributes
     protected ArrayList<Release> releases;
 
-    public Artist(String name, String URL) {
-        super(name, URL);
+    //Constructor
+    public Artist(String NAME, String URL) {
+        super(NAME, URL);
     }
 
+    //Methods
     public ArrayList<Release> getReleases() {
         return releases;
     }

@@ -1,17 +1,21 @@
-public class Release extends PublicEntity{
-    private Artist[] artists;
-    private Song[] songs;
+public class Release extends PublicEntity {
+    //Attributes
+    private final Artist[] ARTISTS;
+    private final Song[] SONGS;
 
-    public Release(String name, String URL, Artist[] artists) {
+    //Constructor
+    public Release(String name, String URL, Artist[] ARTISTS, Song[] SONGS) {
         super(name, URL);
-        this.artists = artists;
+        this.ARTISTS = ARTISTS;
+        this.SONGS = SONGS;
     }
 
-    public Artist[] getArtists() {
-        return artists;
+    //Methods
+    public Artist[] getARTISTS() {
+        return ARTISTS;
     }
 
-    public Song[] getSongs() {
-        return songs;
+    public Song[] getSONGS() {
+        return SONGS;
     }
 }
