@@ -8,8 +8,8 @@ public class Playlist extends PublicEntity implements Serializable {
     private ArrayList<Song> songs;
 
     //Constructor
-    public Playlist(String NAME, String URL) {
-        super(NAME, URL);
+    public Playlist(String NAME) {
+        super(NAME);
     }
 
     public boolean isPublic() {

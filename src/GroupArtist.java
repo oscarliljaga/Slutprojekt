@@ -6,14 +6,16 @@ public class GroupArtist extends Artist implements Serializable {
     private ArrayList<SoloArtist> members;
 
     //Constructor
-    public GroupArtist(String NAME, String URL, ArrayList<SoloArtist> members) {
-        super(NAME, URL);
+    public GroupArtist(String NAME, ArrayList<SoloArtist> members) {
+        super(NAME);
         this.members = members;
     }
 
     public GroupArtist() {
         super();
-        //TODO add members
+        System.out.println("Add members:");
+        for (Artist soloArtist : Database.chooseArtists(true)) this.addMember((SoloArtist) soloArtist);
+        Database.artists.add(this);
     }
 
     //Methods

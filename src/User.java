@@ -9,8 +9,8 @@ public class User extends PublicEntity implements Serializable {
     private boolean loggedIn = false;
 
     //Constructor
-    public User(String NAME, String URL, String password) {
-        super(NAME, URL);
+    public User(String NAME, String password) {
+        super(NAME);
         this.password = password;
     }
 

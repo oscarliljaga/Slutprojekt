@@ -1,12 +1,7 @@
 public class Main {
-    private static Program program;
 
     public static void main(String[] args) {
-        program = new Program();
-    }
-
-    public static Program getProgram() {
-        return program;
+        new Program();
     }
 }
 

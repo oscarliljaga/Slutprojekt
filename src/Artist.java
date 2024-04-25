@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 abstract public class Artist extends PublicEntity implements Serializable {
@@ -8,8 +7,8 @@ abstract public class Artist extends PublicEntity implements Serializable {
     protected ArrayList<Release> releases;
 
     //Constructor
-    public Artist(String NAME, String URL) {
-        super(NAME, URL);
+    public Artist(String NAME) {
+        super(NAME);
     }
 
     public Artist() {

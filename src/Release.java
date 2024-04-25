@@ -6,10 +6,11 @@ public class Release extends PublicEntity implements Serializable {
     private final Song[] SONGS;
 
     //Constructor
-    public Release(String name, String URL, Artist[] ARTISTS, Song[] SONGS) {
-        super(name, URL);
-        this.ARTISTS = ARTISTS;
-        this.SONGS = SONGS;
+    public Release() {
+        super();
+        this.ARTISTS = Database.chooseArtists();
+        this.SONGS = Database.chooseSongs();
+        Database.releases.add(this);
     }
 
     //Methods

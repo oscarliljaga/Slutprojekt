@@ -7,28 +7,18 @@ public class Song extends PublicEntity implements Serializable {
     private final Artist[] ARTISTS;
 
     //Constructor
-    public Song(String name, String URL, Artist[] ARTISTS) {
-        super(name, URL);
-        this.ARTISTS = ARTISTS;
-
-        for (int i = 0; i < ARTISTS.length; i++) {
-            ARTISTS[i].addSong(this);
-        }
-    }
-
     public Song() {
         super();
-
         Scanner scanner = new Scanner(System.in);
-
-        ArrayList<Artist> artists = Database.getArtists();
+        ArrayList<Artist> artists = Database.artists;
         ArrayList<Artist> songArtists = new ArrayList<>();
 
         addArtists:
         while (true) { //Add multiple Artists
             for (int i = 0; i < artists.size(); i++) { //List all Artists
                 Artist artist = artists.get(i);
-                System.out.println(String.format("[%d] %s | %s", i, artist.getNAME(), artist.getURL()));
+                if(songArtists.contains(artist)) System.out.print(">");
+                System.out.printf("[%d] %s\n", i, artist.getNAME());
             }
             System.out.println("[N]ew artist\n[Q]uit");
 
@@ -41,12 +31,12 @@ public class Song extends PublicEntity implements Serializable {
                     switch (scanner.nextLine().toUpperCase()) {
                         case "S":
                             SoloArtist newSoloArtist = new SoloArtist();
-                            Database.addArtist(newSoloArtist);
+                            Database.artists.add(newSoloArtist);
                             songArtists.add(newSoloArtist);
                             break inputLoop;
                         case "G":
                             GroupArtist newGroupArtist = new GroupArtist();
-                            Database.addArtist(newGroupArtist);
+                            Database.artists.add(newGroupArtist);
                             songArtists.add(newGroupArtist);
                             break inputLoop;
                         case "Q":
@@ -56,7 +46,7 @@ public class Song extends PublicEntity implements Serializable {
                             break;
                     }
                 }
-            } else if (input.equals("Q")) break addArtists; //Continue with song creation
+            } else if (input.equals("Q")) break; //Continue with song creation
             else { //Select existing Artist
                 try {
                     songArtists.add(artists.get(Integer.parseInt(input)));
