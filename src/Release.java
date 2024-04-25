@@ -1,4 +1,6 @@
-public class Release extends PublicEntity {
+import java.io.Serializable;
+
+public class Release extends PublicEntity implements Serializable {
     //Attributes
     private final Artist[] ARTISTS;
     private final Song[] SONGS;

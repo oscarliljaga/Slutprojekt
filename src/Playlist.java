@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Playlist extends PublicEntity {
+public class Playlist extends PublicEntity implements Serializable {
     //Attributes
     private boolean isPublic = false;
     private User owner;

@@ -1,10 +1,20 @@
 public class Main {
+    private static Program program;
+
     public static void main(String[] args) {
-        new Program();
+        program = new Program();
+    }
+
+    public static Program getProgram() {
+        return program;
     }
 }
 
 /*
+Artist
+Song
+Release
+
 abstract PublicEntity
     #name: String
     #url: String

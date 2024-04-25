@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class User extends PublicEntity {
+public class User extends PublicEntity implements Serializable {
     //Attributes
     private String password;
     private ArrayList<Playlist> playlists;

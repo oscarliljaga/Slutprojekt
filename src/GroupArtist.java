@@ -1,12 +1,19 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GroupArtist extends Artist {
+public class GroupArtist extends Artist implements Serializable {
     //Attributes
     private ArrayList<SoloArtist> members;
 
     //Constructor
-    public GroupArtist(String NAME, String URL) {
+    public GroupArtist(String NAME, String URL, ArrayList<SoloArtist> members) {
         super(NAME, URL);
+        this.members = members;
+    }
+
+    public GroupArtist() {
+        super();
+        //TODO add members
     }
 
     //Methods
