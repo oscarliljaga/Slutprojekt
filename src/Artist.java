@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 abstract public class Artist extends PublicEntity implements Serializable {
     //Attributes
+    private static final long serialVersionUID = 1L;
+
     protected ArrayList<Song> songs;
     protected ArrayList<Release> releases;
 

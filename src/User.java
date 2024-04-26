@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class User extends PublicEntity implements Serializable {
     //Attributes
@@ -9,9 +10,11 @@ public class User extends PublicEntity implements Serializable {
     private boolean loggedIn = false;
 
     //Constructor
-    public User(String NAME, String password) {
-        super(NAME);
-        this.password = password;
+    public User() {
+        super();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\nPassword: ");
+        password = scanner.nextLine();
     }
 
     //Methods
@@ -24,6 +27,10 @@ public class User extends PublicEntity implements Serializable {
 
     public boolean isLoggedIn() {
         return loggedIn;
+    }
+
+    public void logout() {
+        loggedIn = false;
     }
 
     private boolean setPassword(String oldPassword, String newPassword) {

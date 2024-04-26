@@ -1,23 +1,25 @@
+import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Song extends PublicEntity implements Serializable {
     //Attributes
+    private static final long serialVersionUID = 1L;
     private final Artist[] ARTISTS;
 
     //Constructor
-    public Song() {
+    public Song(Database database) {
         super();
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Artist> artists = Database.artists;
+        ArrayList<Artist> artists = database.artists;
         ArrayList<Artist> songArtists = new ArrayList<>();
 
         addArtists:
         while (true) { //Add multiple Artists
             for (int i = 0; i < artists.size(); i++) { //List all Artists
                 Artist artist = artists.get(i);
-                if(songArtists.contains(artist)) System.out.print(">");
+                if (songArtists.contains(artist)) System.out.print(">");
                 System.out.printf("[%d] %s\n", i, artist.getNAME());
             }
             System.out.println("[N]ew artist\n[Q]uit");
@@ -30,13 +32,13 @@ public class Song extends PublicEntity implements Serializable {
 
                     switch (scanner.nextLine().toUpperCase()) {
                         case "S":
-                            SoloArtist newSoloArtist = new SoloArtist();
-                            Database.artists.add(newSoloArtist);
+                            SoloArtist newSoloArtist = new SoloArtist(database);
+                            database.artists.add(newSoloArtist);
                             songArtists.add(newSoloArtist);
                             break inputLoop;
                         case "G":
-                            GroupArtist newGroupArtist = new GroupArtist();
-                            Database.artists.add(newGroupArtist);
+                            GroupArtist newGroupArtist = new GroupArtist(database);
+                            database.artists.add(newGroupArtist);
                             songArtists.add(newGroupArtist);
                             break inputLoop;
                         case "Q":
@@ -56,6 +58,7 @@ public class Song extends PublicEntity implements Serializable {
             }
         }
         this.ARTISTS = songArtists.toArray(new Artist[0]);
+        database.songs.add(this);
     }
 
     //Methods

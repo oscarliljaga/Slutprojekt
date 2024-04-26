@@ -3,7 +3,8 @@ import java.util.ArrayList;
 
 public class GroupArtist extends Artist implements Serializable {
     //Attributes
-    private ArrayList<SoloArtist> members;
+    private static final long serialVersionUID = 1L;
+    private ArrayList<SoloArtist> members = new ArrayList<>();
 
     //Constructor
     public GroupArtist(String NAME, ArrayList<SoloArtist> members) {
@@ -11,11 +12,11 @@ public class GroupArtist extends Artist implements Serializable {
         this.members = members;
     }
 
-    public GroupArtist() {
+    public GroupArtist(Database database) {
         super();
-        System.out.println("Add members:");
-        for (Artist soloArtist : Database.chooseArtists(true)) this.addMember((SoloArtist) soloArtist);
-        Database.artists.add(this);
+        System.out.println("\nAdd members: ");
+        for (Artist soloArtist : database.chooseArtists(true)) this.addMember((SoloArtist) soloArtist);
+        database.artists.add(this);
     }
 
     //Methods

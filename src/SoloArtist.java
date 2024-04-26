@@ -1,9 +1,10 @@
 import java.io.Serializable;
 
 public class SoloArtist extends Artist implements Serializable {
+    private static final long serialVersionUID = 1L;
     //Constructor
-    public SoloArtist() {
+    public SoloArtist(Database database) {
         super();
-        Database.artists.add(this);
+        database.artists.add(this);
     }
 }

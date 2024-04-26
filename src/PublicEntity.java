@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public abstract class PublicEntity implements Serializable {
     //Attributes
+    private static final long serialVersionUID = 1L;
     protected final String NAME;
 
     //Constructor
@@ -12,7 +13,7 @@ public abstract class PublicEntity implements Serializable {
 
     public PublicEntity() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Name: ");
+        System.out.print("\nName: ");
         this.NAME = scanner.nextLine();
     }
 

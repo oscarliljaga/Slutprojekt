@@ -1,19 +1,24 @@
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Database implements Serializable {
     //Attributes
-    public static ArrayList<Artist> artists = new ArrayList<>();
-    public static ArrayList<Song> songs = new ArrayList<>();
-    public static ArrayList<Release> releases = new ArrayList<>();
-    private static final Scanner scanner = new Scanner(System.in);
-
+    private static final long serialVersionUID = 1L;
+    public ArrayList<Artist> artists = new ArrayList<>();
+    public ArrayList<Song> songs = new ArrayList<>();
+    public ArrayList<Release> releases = new ArrayList<>();
+    public ArrayList<User> users = new ArrayList<>();
+    public ArrayList<Playlist> playlists = new ArrayList<>();
     //Constructor
+
+    /**
+     * Constructs Database from file "database"
+     */
     public Database() {
+
     }
 
     //Methods
@@ -23,7 +28,7 @@ public class Database implements Serializable {
      *
      * @return chosen Artists
      */
-    public static Artist[] chooseArtists() {
+    public Artist[] chooseArtists() {
         return chooseArtists(false);
     }
 
@@ -33,7 +38,8 @@ public class Database implements Serializable {
      * @param soloArtistsOnly to only show SoloArtists
      * @return chosen Artists
      */
-    public static Artist[] chooseArtists(Boolean soloArtistsOnly) {
+    public Artist[] chooseArtists(Boolean soloArtistsOnly) {
+        Scanner scanner = new Scanner(System.in);
         ArrayList<Artist> chosenArtists = new ArrayList<>();
 
         while (true) { //Add multiple Artists
@@ -49,17 +55,17 @@ public class Database implements Serializable {
 
             String input = scanner.nextLine().toUpperCase();
             if (input.equals("N")) { //Create a new Artist
-                if (soloArtistsOnly) chosenArtists.add(new SoloArtist());
+                if (soloArtistsOnly) chosenArtists.add(new SoloArtist(this));
                 else {
                     inputLoop:
                     while (true) {
                         System.out.println("\n[S]olo Artist or [G]roup Artist?\n[Q]uit");
                         switch (scanner.nextLine().toUpperCase()) {
                             case "S":
-                                chosenArtists.add(new SoloArtist());
+                                chosenArtists.add(new SoloArtist(this));
                                 break inputLoop;
                             case "G":
-                                chosenArtists.add(new GroupArtist());
+                                chosenArtists.add(new GroupArtist(this));
                                 break inputLoop;
                             case "Q":
                                 break inputLoop;
@@ -86,7 +92,8 @@ public class Database implements Serializable {
      *
      * @return chosen Songs
      */
-    public static Song[] chooseSongs() {
+    public Song[] chooseSongs() {
+        Scanner scanner = new Scanner(System.in);
         ArrayList<Song> chosenSongs = new ArrayList<>();
 
         while (true) { //Add multiple Songs
@@ -105,7 +112,7 @@ public class Database implements Serializable {
 
             String input = scanner.nextLine().toUpperCase();
             if (input.equals("N")) { //Create a new Song
-                chosenSongs.add(new Song());
+                chosenSongs.add(new Song(this));
             } else if (input.equals("Q")) break; //Finish choosing
             else { //Select existing Song
                 try {
