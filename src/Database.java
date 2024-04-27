@@ -1,30 +1,100 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
+/**
+ * Singleton class which saves user generated data to a local file:
+ * Releases, Artists, Songs, Users, Playlists
+ */
 public class Database implements Serializable {
     //Attributes
+    @Serial
     private static final long serialVersionUID = 1L;
-    public ArrayList<Artist> artists = new ArrayList<>();
-    public ArrayList<Song> songs = new ArrayList<>();
-    public ArrayList<Release> releases = new ArrayList<>();
-    public ArrayList<User> users = new ArrayList<>();
-    public ArrayList<Playlist> playlists = new ArrayList<>();
+    private static Database INSTANCE;
+    private ArrayList<Release> releases = new ArrayList<>();
+    private ArrayList<Artist> artists = new ArrayList<>();
+    private ArrayList<Song> songs = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Playlist> playlists = new ArrayList<>();
+
     //Constructor
-
-    /**
-     * Constructs Database from file "database"
-     */
-    public Database() {
-
+    private Database() {
+        users.add(new User("admin", "lösen")); //Adds a default admin user
+        this.saveToFile();
     }
 
     //Methods
+    public static Database getInstance() { //Returns or creates the only Database instance
+        if (INSTANCE == null) {
+            try { //Tries to import existing Database from file "database"
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream("database"));
+                INSTANCE = (Database) ois.readObject();
+            } catch (FileNotFoundException ignored) { //Saved Database doesn't exist, create and save a new Database
+                INSTANCE = new Database();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return INSTANCE;
+    }
 
     /**
-     * Prompts menu for picking out Artists from the database
+     * Saves Database to file "database"
+     */
+    public boolean saveToFile() {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("database"));
+            oos.writeObject(this);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ArrayList<Release> getReleases() {
+        return releases;
+    }
+
+    public ArrayList<Artist> getArtists() {
+        return artists;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void addRelease(Release release) {
+        releases.add(release);
+    }
+
+    public void addArtist(Artist artist) {
+        artists.add(artist);
+    }
+
+    public void addSong(Song song) {
+        songs.add(song);
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void addPlaylist(Playlist playlist) {
+        playlists.add(playlist);
+    }
+
+    /**
+     * Prompts menu for picking out Artists from the database.
+     * Pass true to only show SoloArtists
      *
      * @return chosen Artists
      */
@@ -71,7 +141,6 @@ public class Database implements Serializable {
                                 break inputLoop;
                             default:
                                 System.out.println("Please type an option in [brackets]");
-                                break;
                         }
                     }
                 }
@@ -79,7 +148,7 @@ public class Database implements Serializable {
             else { //Select existing Artist
                 try {
                     chosenArtists.add(artists.get(Integer.parseInt(input)));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                     System.out.println("Please type an option in [brackets]");
                 }
             }
@@ -98,29 +167,19 @@ public class Database implements Serializable {
 
         while (true) { //Add multiple Songs
             System.out.println("Choose songs: ");
-            for (int i = 0; i < songs.size(); i++) { //List all Songs
-                Song song = songs.get(i);
-                if (chosenSongs.contains(song)) System.out.print(">");
-                System.out.printf("[%d] %s - %s\n",
-                        i,
-                        Arrays.stream(song.getARTISTS())
-                                .map(Artist::getNAME)
-                                .collect(Collectors.joining(", ")),
-                        song.getNAME());
-            }
+            Program.listSongs(songs.toArray(new Song[0]), chosenSongs);
             System.out.println("[N]ew song\n[Q]uit");
 
             String input = scanner.nextLine().toUpperCase();
             if (input.equals("N")) { //Create a new Song
                 chosenSongs.add(new Song(this));
             } else if (input.equals("Q")) break; //Finish choosing
-            else { //Select existing Song
-                try {
+            else try {//Select existing Song
                     chosenSongs.add(songs.get(Integer.parseInt(input)));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                     System.out.println("Please type an option in [brackets]");
                 }
-            }
+
         }
         return chosenSongs.toArray(new Song[0]);
     }

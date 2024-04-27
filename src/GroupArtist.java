@@ -1,8 +1,10 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GroupArtist extends Artist implements Serializable {
     //Attributes
+    @Serial
     private static final long serialVersionUID = 1L;
     private ArrayList<SoloArtist> members = new ArrayList<>();
 
@@ -16,7 +18,7 @@ public class GroupArtist extends Artist implements Serializable {
         super();
         System.out.println("\nAdd members: ");
         for (Artist soloArtist : database.chooseArtists(true)) this.addMember((SoloArtist) soloArtist);
-        database.artists.add(this);
+        database.addArtist(this);
     }
 
     //Methods

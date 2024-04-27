@@ -1,17 +1,17 @@
-import javax.xml.crypto.Data;
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Song extends PublicEntity implements Serializable {
     //Attributes
+    @Serial
     private static final long serialVersionUID = 1L;
     private final Artist[] ARTISTS;
 
     //Constructor
     public Song(Database database) {
         super();
-        Scanner scanner = new Scanner(System.in);
+        this.ARTISTS = database.chooseArtists();
+        /*Scanner scanner = new Scanner(System.in);
         ArrayList<Artist> artists = database.artists;
         ArrayList<Artist> songArtists = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class Song extends PublicEntity implements Serializable {
             }
         }
         this.ARTISTS = songArtists.toArray(new Artist[0]);
-        database.songs.add(this);
+        database.songs.add(this);*/
     }
 
     //Methods

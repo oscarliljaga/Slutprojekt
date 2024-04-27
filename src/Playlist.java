@@ -4,12 +4,13 @@ import java.util.ArrayList;
 public class Playlist extends PublicEntity implements Serializable {
     //Attributes
     private boolean isPublic = false;
-    private User owner;
+    private final User owner;
     private ArrayList<Song> songs;
 
     //Constructor
-    public Playlist(String NAME) {
+    public Playlist(String NAME, User owner) {
         super(NAME);
+        this.owner = owner;
     }
 
     public boolean isPublic() {

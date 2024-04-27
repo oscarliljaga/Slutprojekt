@@ -5,6 +5,6 @@ public class SoloArtist extends Artist implements Serializable {
     //Constructor
     public SoloArtist(Database database) {
         super();
-        database.artists.add(this);
+        database.addArtist(this);
     }
 }

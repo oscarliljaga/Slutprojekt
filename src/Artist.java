@@ -1,10 +1,11 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 abstract public class Artist extends PublicEntity implements Serializable {
     //Attributes
+    @Serial
     private static final long serialVersionUID = 1L;
-
     protected ArrayList<Song> songs;
     protected ArrayList<Release> releases;
 
