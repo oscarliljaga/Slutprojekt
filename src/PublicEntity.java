@@ -1,8 +1,10 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Scanner;
 
 public abstract class PublicEntity implements Serializable {
     //Attributes
+    @Serial
     private static final long serialVersionUID = 1L;
     protected final String NAME;
 
@@ -12,9 +14,10 @@ public abstract class PublicEntity implements Serializable {
     }
 
     public PublicEntity() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("\nName: ");
+        Scanner scanner = Program.SCANNER;
+        System.out.print("Name: ");
         this.NAME = scanner.nextLine();
+        System.out.println();
     }
 
     //Methods

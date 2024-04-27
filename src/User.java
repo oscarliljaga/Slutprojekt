@@ -1,18 +1,22 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class User extends PublicEntity implements Serializable {
     //Attributes
-    private String password;
-    private ArrayList<Playlist> playlists;
-    private boolean loggedIn = false;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private final String password;
+    private boolean loggedIn;
+    private final ArrayList<Playlist> playlists = new ArrayList<>();
 
     //Constructor
     public User(String NAME, String password) {
-        super(NAME);
+        super(NAME.toLowerCase());
         this.password = password;
         loggedIn = true;
+        Database.getInstance().addUser(this);
     }
 
     //Methods
@@ -31,23 +35,12 @@ public class User extends PublicEntity implements Serializable {
         loggedIn = false;
     }
 
-    private boolean setPassword(String oldPassword, String newPassword) {
-        if (login(oldPassword)) {
-            this.password = newPassword;
-            return true;
-        } else return false;
-    }
-
-    public ArrayList<Playlist> getPublicPlaylists() {
-        ArrayList<Playlist> publicPlaylists = new ArrayList<Playlist>();
-        for (int i = 0; i < playlists.size(); i++) {
-            if (playlists.get(i).isPublic()) publicPlaylists.add(playlists.get(i));
-        }
-        return publicPlaylists;
-    }
-
-    private ArrayList<Playlist> getAllPlaylists() {
+    public ArrayList<Playlist> getAllPlaylists() {
         if (loggedIn) return playlists;
         else return null;
+    }
+
+    public void addPlaylist(Playlist playlist) {
+        this.playlists.add(playlist);
     }
 }

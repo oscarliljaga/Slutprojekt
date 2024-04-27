@@ -1,24 +1,39 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Playlist extends PublicEntity implements Serializable {
     //Attributes
+    @Serial
+    private static final long serialVersionUID = 1L;
     private boolean isPublic = false;
     private final User owner;
-    private ArrayList<Song> songs;
+    private final ArrayList<Song> songs = new ArrayList<>();
 
     //Constructor
-    public Playlist(String NAME, User owner) {
-        super(NAME);
+    public Playlist(User owner) {
+        super();
         this.owner = owner;
+        inputLoop:
+        while (true) { //Input loop
+            System.out.println("Make this playlist public? [Y]/[N]");
+            String publicityInput = Program.SCANNER.nextLine().toUpperCase();
+            System.out.println();
+            switch (publicityInput) {
+                case "Y":
+                    this.isPublic = true;
+                case "N": // Not public is default
+                    break inputLoop;
+                default: // Invalid input
+                    System.out.println("Please type an option in [brackets]");
+            }
+        }
+        owner.addPlaylist(this);
+        Database.getInstance().addPlaylist(this);
     }
 
     public boolean isPublic() {
         return isPublic;
-    }
-
-    private void setPublic(boolean state) {
-        if (owner.isLoggedIn()) isPublic = state;
     }
 
     public User getOwner() {
@@ -30,11 +45,9 @@ public class Playlist extends PublicEntity implements Serializable {
         else return null;
     }
 
-    private void addSong(Song song) {
+    public void addSong(Song song) {
         if (owner.isLoggedIn() && !songs.contains(song)) songs.add(song);
+        Database.saveToFile();
     }
 
-    private void removeSong(Song song) {
-        if (owner.isLoggedIn()) songs.remove(song);
-    }
 }

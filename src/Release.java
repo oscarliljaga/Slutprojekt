@@ -12,7 +12,9 @@ public class Release extends PublicEntity implements Serializable {
     public Release() {
         super();
         Database database = Database.getInstance();
+        System.out.print(this.NAME + " | ");
         this.ARTISTS = database.chooseArtists();
+        System.out.print(this.NAME + " | ");
         this.SONGS = database.chooseSongs();
         database.addRelease(this);
     }
