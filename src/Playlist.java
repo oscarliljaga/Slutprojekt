@@ -25,7 +25,7 @@ public class Playlist extends PublicEntity implements Serializable {
                 case "N": // Not public is default
                     break inputLoop;
                 default: // Invalid input
-                    System.out.println("Please type an option in [brackets]");
+                    System.out.println("###Please type an option in [brackets]###");
             }
         }
         owner.addPlaylist(this);
@@ -41,8 +41,8 @@ public class Playlist extends PublicEntity implements Serializable {
     }
 
     public ArrayList<Song> getSongs() {
-        if (owner.isLoggedIn()) return songs;
-        else return null;
+        if (!this.isPublic && !owner.isLoggedIn()) return new ArrayList<>();
+        else return songs;
     }
 
     public void addSong(Song song) {

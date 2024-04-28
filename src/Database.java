@@ -94,24 +94,26 @@ public class Database implements Serializable {
      * Prompts menu for picking out Artists from the database.
      * Pass true to only show SoloArtists
      *
+     * @param header String to show what Artists are being chosen for
      * @return chosen Artists
      */
-    public Artist[] chooseArtists() {
-        return chooseArtists(false);
+    public ArrayList<Artist> chooseArtists(String header) {
+        return chooseArtists(false, header);
     }
 
     /**
      * Prompts menu for picking out Artists from the database
      *
      * @param soloArtistsOnly to only show SoloArtists
+     * @param header          String to show what Artists are being chosen for
      * @return chosen Artists
      */
-    public Artist[] chooseArtists(Boolean soloArtistsOnly) {
+    public ArrayList<Artist> chooseArtists(Boolean soloArtistsOnly, String header) {
         Scanner scanner = Program.SCANNER;
         ArrayList<Artist> chosenArtists = new ArrayList<>();
 
         while (true) {
-            System.out.print("Choose artists: \n");
+            System.out.print(header + " | Choose artists: \n");
             for (int i = 0; i < artists.size(); i++) { //List all Artists
                 Artist artist = artists.get(i);
                 if (soloArtistsOnly && !(artist instanceof SoloArtist))
@@ -146,7 +148,7 @@ public class Database implements Serializable {
                             case "Q": //Quit
                                 break inputLoop;
                             default: //Invalid input
-                                System.out.println("Please type an option in [brackets]");
+                                System.out.println("###Please type an option in [brackets]###");
                         }
                     }
                 }
@@ -157,25 +159,27 @@ public class Database implements Serializable {
                 try {
                     Artist artist = artists.get(Integer.parseInt(input));
                     if (!chosenArtists.contains(artist)) chosenArtists.add(artist);
+                    else chosenArtists.remove(artist); //Deselect already chosen artist
                 } catch (Exception ignored) { //Invalid input
-                    System.out.println("Please type an option in [brackets]");
+                    System.out.println("###Please type an option in [brackets]###");
                 }
             }
         }
-        return chosenArtists.toArray(new Artist[0]);
+        return chosenArtists;
     }
 
     /**
      * Prompts menu for picking out Songs from the database
      *
+     * @param header String to show what songs are being chosen for
      * @return chosen Songs
      */
-    public Song[] chooseSongs() {
+    public ArrayList<Song> chooseSongs(String header) {
         Scanner scanner = Program.SCANNER;
         ArrayList<Song> chosenSongs = new ArrayList<>();
 
         while (true) { //Add multiple Songs
-            System.out.println("Choose songs: ");
+            System.out.println(header + " | Choose songs: ");
             Program.listSongs(songs.toArray(new Song[0]), chosenSongs);
             System.out.println("[N]ew song\n[Q]uit");
 
@@ -188,10 +192,11 @@ public class Database implements Serializable {
             else try { //Select existing Song
                     Song song = songs.get(Integer.parseInt(input));
                     if (!chosenSongs.contains(song)) chosenSongs.add(song);
+                    else chosenSongs.remove(song); //Deselect already chosen song
                 } catch (Exception ignored) { //Invalid input
-                    System.out.println("Please type an option in [brackets]");
+                    System.out.println("###Please type an option in [brackets]###");
                 }
         }
-        return chosenSongs.toArray(new Song[0]);
+        return chosenSongs;
     }
 }

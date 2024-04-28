@@ -12,8 +12,7 @@ public class GroupArtist extends Artist implements Serializable {
     public GroupArtist() {
         super();
         Database database = Database.getInstance();
-        System.out.print(this.NAME + " members | ");
-        for (Artist soloArtist : database.chooseArtists(true))
+        for (Artist soloArtist : database.chooseArtists(true, this.NAME + " members"))
             this.addMember((SoloArtist) soloArtist); //Adds Solo Artist members chosen from chooseArtists()
         database.addArtist(this);
     }

@@ -10,14 +10,24 @@ public abstract class PublicEntity implements Serializable {
 
     //Constructor
     public PublicEntity(String NAME) {
+        Scanner scanner = Program.SCANNER;
+        while (NAME.isBlank()) {
+            System.out.print("Name cannot be blank, try again: ");
+            NAME = scanner.nextLine();
+        }
         this.NAME = NAME;
     }
 
     public PublicEntity() {
         Scanner scanner = Program.SCANNER;
         System.out.print("Name: ");
-        this.NAME = scanner.nextLine();
+        String NAME = scanner.nextLine();
+        while (NAME.isBlank()) {
+            System.out.print("Name cannot be blank, try again: ");
+            NAME = scanner.nextLine();
+        }
         System.out.println();
+        this.NAME = NAME;
     }
 
     //Methods

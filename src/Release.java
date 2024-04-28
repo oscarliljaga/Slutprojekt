@@ -1,5 +1,6 @@
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Release extends PublicEntity implements Serializable {
     //Attributes
@@ -12,10 +13,20 @@ public class Release extends PublicEntity implements Serializable {
     public Release() {
         super();
         Database database = Database.getInstance();
-        System.out.print(this.NAME + " | ");
-        this.ARTISTS = database.chooseArtists();
-        System.out.print(this.NAME + " | ");
-        this.SONGS = database.chooseSongs();
+        ArrayList<Artist> ARTISTS = database.chooseArtists(this.NAME);
+        while (ARTISTS.isEmpty()) { //Don't let ARTISTS be empty
+            System.out.print("Artists cannot be empty, try again... ");
+            ARTISTS = database.chooseArtists(this.NAME);
+        }
+        this.ARTISTS = ARTISTS.toArray(new Artist[0]);
+
+        ArrayList<Song> SONGS = database.chooseSongs(this.NAME);
+        while (SONGS.isEmpty()) { //Don't let SONGS be empty
+            System.out.print("Songs cannot be empty, try again... ");
+            SONGS = database.chooseSongs(this.NAME);
+        }
+        this.SONGS = SONGS.toArray(new Song[0]);
+
         database.addRelease(this);
     }
 

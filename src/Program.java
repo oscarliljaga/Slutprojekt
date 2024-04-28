@@ -28,36 +28,39 @@ public class Program {
                     case "L": //Login
                         System.out.print("Username: ");
                         String username = SCANNER.nextLine().trim().toLowerCase();
-                        System.out.print("Password: ");
-                        String password = SCANNER.nextLine().trim();
 
                         for (int i = 0; i < DATABASE.getUsers().size(); i++) { //Try to find User with the given username
                             User existingUser = DATABASE.getUsers().get(i);
                             if (existingUser.getNAME().equals(username)) { //User found
+                                System.out.print("Password: ");
+                                String password = SCANNER.nextLine().trim();
+                                System.out.println();
                                 while (!password.equalsIgnoreCase("Q")) { //Loops until correct password, or user quits
                                     if (existingUser.login(password)) { //Complete login if password is correct
                                         loggedInUser = existingUser;
                                         continue mainMenu; //Continue to main menu
                                     } else { //Wrong password, try again
                                         System.out.printf("Incorrect password. Try again or [Q]uit\nUsername: %s\nPassword: ", username);
+                                        System.out.println();
                                         password = SCANNER.nextLine();
                                     }
                                 }
                                 continue login; //User quit, go back to start screen
                             }
                         }
-                        loggedInUser = new User(username, password); //User not found, create it using the credentials and log in
+                        //User not found, create it and log in
+                        loggedInUser = new User(username);
                         break;
                     case "Q": //Quit program
                         break mainMenu;
                     default: //Incorrect input
-                        System.out.println("Please type an option in [brackets]");
+                        System.out.println("###Please type an option in [brackets]###");
                 }
             }
             //User is logged in
 
             if (loggedInUser.getNAME().equals("admin")) { //If admin is logged in
-                System.out.println("\n[A]dd release\n[L]ogout");
+                System.out.println("[A]dd release\n[L]ogout");
                 String adminInput = SCANNER.nextLine().toUpperCase();
                 System.out.println();
                 switch (adminInput) {
@@ -70,7 +73,7 @@ public class Program {
                         loggedInUser = null;
                         continue;
                     default: //Invalid input
-                        System.out.println("Please type an option in [brackets]");
+                        System.out.println("###Please type an option in [brackets]###");
                         break;
                 }
             }
@@ -78,15 +81,16 @@ public class Program {
             //Logged in user, not admin
             System.out.printf("Logged in: %s\n[R]eleases\n[P]laylists\n[L]ogout\n", loggedInUser.getNAME());
 
-            String input = SCANNER.nextLine().toUpperCase();
+            String mainMenuInput = SCANNER.nextLine().toUpperCase();
             System.out.println();
-            switch (input) {
+            switch (mainMenuInput) {
                 case "L":  //Logout
                     loggedInUser.logout();
                     loggedInUser = null;
                     continue;
                 case "R":  //Browse releases
-                    while (true) {
+                    while (true) { //Input loop
+                        System.out.println("Releases:");
                         ArrayList<Release> releases = DATABASE.getReleases();
                         for (int i = 0; i < releases.size(); i++) { //Print out releases
                             Release release = releases.get(i);
@@ -97,28 +101,26 @@ public class Program {
                                             .collect(Collectors.joining(", ")),
                                     release.getNAME()); //[i] Artist1, Artist2 - Release
                         }
-                        System.out.println("Type a release number or [Q]uit\n");
+                        System.out.println("Type a release number or [Q]uit");
 
                         Release release;
-                        while (true) { //Input loop
-                            String releaseInput = SCANNER.nextLine().toUpperCase();
-                            System.out.println();
-                            if (releaseInput.equals("Q")) continue mainMenu; //Quit to main menu
-                            try { //Choose release
-                                release = releases.get(Integer.parseInt(releaseInput));
-                                break;
-                            } catch (Exception ignored) { //Invalid input
-                                System.out.println("Please type an option in [brackets]");
-                            }
+                        String releaseInput = SCANNER.nextLine().toUpperCase();
+                        System.out.println();
+                        if (releaseInput.equals("Q")) continue mainMenu; //Quit to main menu
+                        try { //Choose release
+                            release = releases.get(Integer.parseInt(releaseInput));
+                        } catch (Exception ignored) { //Invalid input
+                            System.out.println("###Please type an option in [brackets]###");
+                            continue;
                         }
 
                         String songInput;
                         while (true) {
                             //Print chosen release
-                            System.out.printf("%s - %s\n",
+                            System.out.printf("%s - %s:\n",
                                     Arrays.stream(release.getARTISTS())
                                             .map(Artist::getNAME)
-                                            .collect(Collectors.joining(", ")), release.getNAME()); //Artist1, Artist2 - Release
+                                            .collect(Collectors.joining(", ")), release.getNAME()); //Artist1, Artist2 - Release:
 
                             Song[] songs = release.getSONGS();
                             listSongs(songs, new ArrayList<>()); //List songs in release
@@ -131,7 +133,7 @@ public class Program {
                             try {
                                 chosenSong = songs[Integer.parseInt(songInput)]; //Choose a listed song
                             } catch (Exception ignored) { //Invalid input
-                                System.out.println("Please type an option in [brackets]");
+                                System.out.println("###Please type an option in [brackets]###");
                                 continue;
                             }
 
@@ -139,23 +141,25 @@ public class Program {
                             ArrayList<Playlist> userPlaylists = loggedInUser.getAllPlaylists();
                             String playlistInput;
                             while (true) { //Input loop
+                                System.out.println("Type a playlist number to add the song");
                                 for (int i = 0; i < userPlaylists.size(); i++) { //Print user Playlists
                                     Playlist playlist = userPlaylists.get(i);
                                     System.out.printf("[%d] %s - %s\n", i, playlist.getOwner().getNAME(), playlist.getNAME()); //[i] User - Playlist
                                 }
-                                System.out.println("[N]ew playlist\n[Q]uit\n");
+                                System.out.println("[N]ew playlist\n[Q]uit");
 
                                 playlistInput = SCANNER.nextLine().toUpperCase();
-
+                                System.out.println();
                                 if (playlistInput.equals("Q")) break; //Quit
                                 else if (playlistInput.equals("N")) { //Add new Playlist
+                                    System.out.print("New playlist | ");
                                     Playlist newPlaylist = new Playlist(loggedInUser);
                                     newPlaylist.addSong(chosenSong); //Add the chosen song
                                     break;
                                 } else try {
                                     userPlaylists.get(Integer.parseInt(playlistInput)).addSong(chosenSong); //Add song to chosen playlist
                                 } catch (Exception ignored) { //Invalid input
-                                    System.out.println("Please type an option in [brackets]");
+                                    System.out.println("###Please type an option in [brackets]###");
                                 }
                             }
                         }
@@ -169,6 +173,7 @@ public class Program {
                     }
 
                     while (true) { //Input loop
+                        System.out.println("Playlists: ");
                         for (int i = 0; i < availablePlaylists.size(); i++) { //Print all available Playlists
                             Playlist playlist = availablePlaylists.get(i);
                             System.out.printf("[%d] %s - %s\n", i, playlist.getOwner().getNAME(), playlist.getNAME()); //[i] User - Playlist
@@ -180,15 +185,17 @@ public class Program {
                         if (playlistInput.equals("Q")) break; //Quit
                         try { //Choose playlist to list Songs
                             Playlist playlist = availablePlaylists.get(Integer.parseInt(playlistInput));
+                            System.out.println(playlist.getNAME() + ":");
                             listSongs(playlist.getSongs().toArray(new Song[0]), new ArrayList<>());
                             System.out.println();
-                        } catch (Exception ignored) { //Invalid input
-                            System.out.println("Please type an option in [brackets]");
+                        } catch (Exception e) { //Invalid input
+                            e.printStackTrace();
+                            System.out.println("###Please type an option in [brackets]###");
                         }
                     }
                     break;
                 default: //Invalid input
-                    System.out.println("Please type an option in [brackets]");
+                    System.out.println("###Please type an option in [brackets]###");
                     break;
             }
         }
